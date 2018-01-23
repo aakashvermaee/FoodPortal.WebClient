@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src='./scripts/angularcore/angular.min.js'></script>
+  <script src='./scripts/angularcore/angular-route.min.js'></script>
+  <script src='./scripts/angularmodules/app.js'></script>
+  <script src='./scripts/angularmodules/services.js'></script>
+  <script src='./scripts/angularmodules/indexModule.js'></script>
+  <script src='./scripts/js/jquery.js'></script>
+  <script src='./scripts/js/LoginRegister.js'></script>
+  <link href="./content/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+  <title>Index</title>
+</head>
+<body ng-app="FoodPortal" ng-controller="indexController" data-ng-init="onInit()">
+    <div class="container" style="width:100%;">
+        <nav class="nav navbar-inverse">  
+      <div class="collapse navbar-collapse" id="navbarNav">
+          
+          <ul class="nav navbar-nav">
+            <li><a class="nav-item nav-link active" href="#!/AddProduct" ng-show="vendorAdd">Add Product</a></li>
+            <li><a class="nav-item nav-link active" href="#!/DeleteProduct" ng-show="vendorDelete">Delete Product</a></li>
+            <li><a class="nav-item nav-link active" href="#!" ng-show="clientMain">Main</a></li>
+            <li><a class="nav-item nav-link" href="#!/Products" ng-show="clientProducts">Products</a></li>
+            <li><a class="nav-item nav-link" href="#!/Beverages" ng-show="clientBeverages">Beverages</a></li>
+            <li><a class="nav-item nav-link" href="#!/Snacks" ng-show="clientSnacks">Snacks</a></li>
+            <li><a class="nav-item nav-link" href="#!/Drinks" ng-show="clientDrinks">Drinks</a></li>
+          </ul> 
+          <ul class="nav navbar-nav navbar-right">
+            <li><a class="nav-item nav-link" href="#!/" ng-show="showClientPrompt"> {{messageClient}} </a></li>
+            <li><a class="nav-item nav-link" href="#!/AddProduct" ng-show="showVendorPrompt"> {{messageVendor}} </a></li>
+            <li><a class="nav-item nav-link" ng-click="onLogout()" href="#!/" ng-show="showLogout">Logout</a></li>
+            <li><a class="nav-item nav-link" href="#!/Login" ng-show="showLogin"> Login </a></li>
+            <li><a class="nav-item nav-link" href="#!/Register" ng-show="showRegister">Register</a></li>
+            <li><a class="nav-item nav-link" href="#!/ChangePassword" ng-show="showChangePassword" ng-click="ChangePassword()">Change Password</a></li>
+            <li>
+              <a class="nav-item nav-link" href="#!/Cart" ng-show="showCart">
+                <span class="glyphicon glyphicon-shopping-cart"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="container" ng-view></div>
+  </div>
+</body>
+</html>

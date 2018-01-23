@@ -1,0 +1,60 @@
+<h2>Register</h2>
+<hr/>
+<div class="col-md-6">
+    <form method="POST" name="registerForm" ng-submit="Register()">
+      <div class="form-group">
+        <input type="text" name="registerUsername" id="registerUsername" ng-model="register.ClientId" ng-pattern="regexUsername" tabindex="1" class="form-control" placeholder="Username" value="" ng-blur="userNameExists()" ng-focus="clearUserNameFields()" required>
+        <span style="color:red" ng-show="registerForm.registerUsername.$error.pattern" class="help-block">
+            Please Enter a valid Username !
+        </span>
+        <span ng-init="False" style="color:red" ng-show="showUserNameMessage" class="help-block">
+            {{userNameMessage}}
+        </span>
+      </div>
+      <div class="form-group">
+          <input type="password" name="registerPassword" id="registerPassword" ng-model="register.Password" ng-pattern="regexPassword" tabindex="2" class="form-control" placeholder="Password" required>
+          <span style="color:red" ng-show="registerForm.registerPassword.$error.pattern" class="help-block">
+              Password doesn't meet the criteria !
+          </span>
+      </div>
+      <div class="form-group">
+          <input type="password" name="confirmPassword" id="confirmPassword" ng-model="ConfirmPassword" ng-blur="passwordEquality()" tabindex="3" class="form-control" placeholder="Confirm Password" required>
+
+          <span style="color:red" ng-show="IsMatch" class="help-block">
+              Your password must match !
+          </span>
+      </div>
+      <div class="form-group">
+          <input type="text" name="name" id="name" ng-model="register.Name" ng-pattern="regexName" tabindex="4" class="form-control" placeholder="Name" required>
+          <span style="color:red" ng-show="registerForm.name.$error.pattern" class="help-block">
+              Name not valid !
+          </span>
+      </div>
+      <div class="form-group">
+          <input type="email" name="email" id="email" ng-model="register.Email" tabindex="5" class="form-control" placeholder="Email Address" value="" 
+                 ng-blur="userEmailExists()" ng-focus="clearEmailFields()" required>
+          <span style="color:red" ng-show="registerForm.email.$invalid" class="help-block">
+              Email not valid !
+          </span>
+          <span style="color:red" ng-show="showEmailExistsMessage" class="help-block">
+              {{emailExistsMessage}}
+          </span>
+      </div>
+      <div class="form-group">
+        <input type="text" name="address" id="address" ng-model="register.Address" tabindex="6" class="form-control" placeholder="Address" required>
+      </div>
+      <div class="form-group">
+        <input type="text" name="contact" id="contact" ng-model="register.Contact" ng-pattern="regexContact" tabindex="7" class="form-control" placeholder="Contact Number" required>
+        <span style="color:red" ng-show="registerForm.contact.$error.pattern" class="help-block">
+            Contact must consist of numbers !
+        </span>
+      </div>
+      <div class="form-group">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <input type="submit" name="register-submit" id="register-submit" tabindex="7" class="form-control btn btn-primary" value="Register Now">
+            </div>
+        </div>
+    </div>
+  </form>
+</div>

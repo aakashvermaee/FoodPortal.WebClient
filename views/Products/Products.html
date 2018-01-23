@@ -1,0 +1,20 @@
+<h1>Products</h1>
+<hr/>
+<div>
+  <table class="table table-striped table-condensed table-bordered">
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Price</th>
+      <th>Offer</th>
+      <th>Add To Cart</th>
+    </tr>
+    <tr ng-repeat="d in data">
+      <td>{{d.Name}}</td>
+      <td>{{d.Category}}</td>
+      <td>{{d.Price}}</td>
+      <td>{{d.Offer}}</td>
+      <td><button value='{{d.ProductId}}' ng-model="id" ng-click="AddToCart($event)">Add To Cart</button></td>
+    </tr>
+  </table>
+</div>
