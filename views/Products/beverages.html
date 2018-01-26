@@ -22,7 +22,7 @@
                 <span ng-if="eachProduct.Offer != true">No Offers</span>
             </td>
             <td style="display: none"><input type="hidden" value='{{eachProduct.ProductId}}' /></td>
-            <td><button value="{{eachProduct.ProductId}}" ng-model="id" ng-click="AddToCart($event)">AddToCart</button></td>
+            <td><button value="{{eachProduct.ProductId}}" ng-model="id" ng-click="AddToCart($event)" ng-hide="disableCart">AddToCart</button></td>
         </tr>
     </table>
 </div>

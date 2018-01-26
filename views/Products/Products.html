@@ -16,7 +16,7 @@
       <td>{{d.Price}}</td>
       <td>{{d.Offer}}</td>
       <td>{{d.Quantity}}</td>
-      <td><button value='{{d.ProductId}}' ng-model="id" ng-click="AddToCart($event)">Add To Cart</button></td>
+      <td><button value='{{d.ProductId}}' ng-model="id" ng-click="AddToCart($event)" ng-hide="disableCart">Add To Cart</button></td>
     </tr>
   </table>
 </div>

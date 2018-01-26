@@ -11,6 +11,12 @@ myApp.config(function ($routeProvider) {
     controller: "mainController"
   })
 
+  .when('/MainVendor', {
+    url: "/mainVendor",
+    templateUrl: "views/mainVendor.html",
+    controller: "mainVendorController"
+  })
+
   .when('/Products', {
     url: "/Products",
     templateUrl: "views/Products/Products.html",
@@ -59,12 +65,6 @@ myApp.config(function ($routeProvider) {
     controller: "AddProductController"
   })
 
-  .when('/DeleteProduct', {
-    url: "/DeleteProduct",
-    templateUrl: "views/Products/DeleteProduct.html",
-    controller: "DeleteProductController"
-  })
-
   .when('/ChangePassword',{
     url: "/ChangePassword",
     templateUrl: "views/users/changePassword.html",
@@ -72,15 +72,23 @@ myApp.config(function ($routeProvider) {
   })
 });
 
-myApp.controller('mainController', ['$scope', '$http', '$log', 'AddToCartService',
-function($scope, $http, $log, AddToCartService){
+myApp.controller('mainController', ['$scope', '$http', '$log', 'AddToCartService', '$rootScope',
+function($scope, $http, $log, AddToCartService, $rootScope){
   //search
   $scope.searchString;
   $scope.Products;
+  $scope.disableCart = false;
+  $rootScope.$on("DisableCart", function() {
+    $scope.disableCart = true;
+  })
   $scope.searchProduct = function () {
     var searchProduct = {
       "Name" : $scope.searchString
     };
+    if(localStorage.getItem("ClientId") == null)
+    {
+        $scope.disableCart = true;
+    }
     console.log(searchProduct);
     $http({
       method: 'POST',
@@ -89,6 +97,8 @@ function($scope, $http, $log, AddToCartService){
       headers: { 'Content-Type': 'application/json' }
     }).then(function successCallBack(response) {
         console.log(response.data);
+        if(response.data.length == 0)
+            alert('No search results !!');
         $scope.Products = response.data;
       }), function errorCallBack(errorResponse) {
           $scope.Products = errorResponse.data;
@@ -105,9 +115,71 @@ function($scope, $http, $log, AddToCartService){
   };
 }]);
 
+// main venndor controller
+
+myApp.controller('mainVendorController', ['$scope', '$http', '$log', 'AddToCartService', '$rootScope',
+function($scope, $http, $log, AddToCartService, $rootScope){
+  //search
+  $scope.searchString;
+  $scope.Products;
+  $scope.searchProduct = function () {
+    var searchProduct = {
+      "Name" : $scope.searchString
+    };
+    if(localStorage.getItem("ClientId") == null)
+    {
+        $scope.disableCart = true;
+    }
+    console.log(searchProduct);
+    $http({
+      method: 'POST',
+      url: uri + 'Products/SearchProduct/',
+      data: searchProduct,
+      headers: { 'Content-Type': 'application/json' }
+    }).then(function successCallBack(response) {
+        console.log(response.data);
+        if(response.data.length == 0)
+            alert('No search results !!');
+        $scope.Products = response.data;
+      }), function errorCallBack(errorResponse) {
+          $scope.Products = errorResponse.data;
+    };
+  };
+
+  //scope var: To store value(id) of a clicked button
+  $scope.id;
+
+  //function to add particular product to the cart
+  $scope.Delete = function (element) {
+      $scope.id = element.currentTarget.value;
+      console.log($scope.id);
+      var obj = {
+          ProductId: $scope.id
+      };
+      $http({
+          method: 'DELETE',
+          url: uri + 'Products/DeleteProduct',
+          data: JSON.stringify(obj),
+          headers: { 'content-type': 'application/json' }
+      }).then(function successCallback(response) {
+          console.log(response.data);
+          alert(response.data);
+          $scope.searchProduct();
+          }, function errorCallback(errorResponse) {
+              console.log(errorResponse.data);
+              alert(errorResponse.data);
+      });
+  };
+}]);
+
 myApp.controller('productsController', ['$scope', '$log', '$http', 'AddToCartService', function($scope, $log, $http, AddToCartService){
   $scope.data;
   $scope.id;
+  $scope.disableCart = false;
+  if(localStorage.getItem("ClientId") == null)
+  {
+    $scope.disableCart = true;
+  }
   $http({
     method: 'GET',
     url: uri + 'Products/GetProducts/',
@@ -129,6 +201,11 @@ myApp.controller('productsController', ['$scope', '$log', '$http', 'AddToCartSer
 
 myApp.controller('categoriesController', ['$scope', '$http', 'AddToCartService', function ($scope, $http, AddToCartService) {
   var _value = document.getElementById('x').value;
+  $scope.disableCart = false;
+  if(localStorage.getItem("ClientId") == null)
+  {
+    $scope.disableCart = true;
+  }
   $scope.responseCategory;
   var productcategory = {
     Category: _value
@@ -239,17 +316,17 @@ myApp.controller('loginController', ['$scope', '$http', '$window', '$rootScope',
     $scope.regexContact = "^[0-9]*$";
     $scope.showLoginMessage = false;
 
-    $scope.onLoad = function () {
-        if (localStorage.getItem("ClientId") != null) {
-          $window.location.href = '/view/ClientIndex';
-        }
-        else if (localStorage.getItem("VendorId") != null) {
-          $window.location.href = '/Main/VendorIndex';
-        }
-        else {
-          $window.location.href = '/Home/Index1';
-        }
-    };
+    // $scope.onLoad = function () {
+    //     if (localStorage.getItem("ClientId") != null) {
+    //       $window.location.href = '/view/ClientIndex';
+    //     }
+    //     else if (localStorage.getItem("VendorId") != null) {
+    //       $window.location.href = '/Main/VendorIndex';
+    //     }
+    //     else {
+    //       $window.location.href = '/Home/Index1';
+    //     }
+    // };
     $scope.Login = function () {
         if (!$scope.loginAsVendor) {
             var dataObj = {
@@ -302,7 +379,7 @@ myApp.controller('loginController', ['$scope', '$http', '$window', '$rootScope',
                 $rootScope.$emit("CallOnLogin", {});
                 //$state.transitionTo('', {arg: 'arg'});
                 //$window.location.href = '/Main/VendorIndex';
-                $location.url('/AddProduct');
+                $location.url('/MainVendor');
             }, function errorCallback(response) {
                 $scope.loginMessage = "Error !! Kindly check your credentials";
                 $scope.showLoginMessage = true;
@@ -329,29 +406,14 @@ myApp.controller('AddProductController', function ($scope, $http) {
   }
 });
 
-myApp.controller('DeleteProductController', function ($scope, $http) {
-  $scope.RemoveProduct = function () {
-      console.log($scope.ProductId);
-      var obj = {
-          ProductId: $scope.ProductId
-      };
-      $http({
-          method: 'DELETE',
-          url: uri + 'Products/DeleteProduct',
-          data: JSON.stringify(obj),
-          headers: { 'content-type': 'application/json' }
-      }).then(function successCallback(response) {
-          console.log(response.data);
-          alert(response.data);
-          }, function errorCallback(errorResponse) {
-              console.log(errorResponse.data);
-              alert(errorResponse.data);
-      });
-  }
-});
-
 myApp.controller('PasswordController', function ($scope, $http, $window) {
   $scope.passwordChanged = false;
+  $scope.passwordEquality = function () {
+    if ($scope.newPassword != $scope.confirmPassword) {
+      $scope.IsMatch = true;
+    }
+    else  $scope.IsMatch = false;
+};
   $scope.changePassword = function () {
      if(localStorage.getItem("ClientId") != null)
       changePasswordClient();

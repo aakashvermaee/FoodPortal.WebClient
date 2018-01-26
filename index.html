@@ -18,8 +18,8 @@
         <nav class="container-fluid nav navbar-inverse navbar-fixed-top">
       <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="nav navbar-nav">
+            <li><a class="nav-item nav-link active" href="#!/MainVendor" ng-show="vendorMain">Main</a></li>
             <li><a class="nav-item nav-link active" href="#!/AddProduct" ng-show="vendorAdd">Add Product</a></li>
-            <li><a class="nav-item nav-link active" href="#!/DeleteProduct" ng-show="vendorDelete">Delete Product</a></li>
             <li><a class="nav-item nav-link active" href="#!" ng-show="clientMain">Main</a></li>
             <li><a class="nav-item nav-link" href="#!/Products" ng-show="clientProducts">Products</a></li>
             <li><a class="nav-item nav-link" href="#!/Beverages" ng-show="clientBeverages">Beverages</a></li>
@@ -43,7 +43,7 @@
       </nav>
     </div>
 
-    <div class="container-fluid" ng-view></div>
+    <div style="padding:30px" class="container-fluid" ng-view></div>
   </div>
 </body>
 

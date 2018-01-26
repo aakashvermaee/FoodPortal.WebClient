@@ -1,6 +1,6 @@
 var index = angular.module('indexModule', []);
 
-index.controller('indexController', function($scope, $rootScope){
+index.controller('indexController', function($scope, $rootScope, $location){
   $scope.onInit = function(){
     $scope.onLogin();
   };
@@ -37,11 +37,12 @@ index.controller('indexController', function($scope, $rootScope){
         $scope.clientDrinks = true;
         $scope.clientProducts = true;
         $scope.vendorAdd = false;
-        $scope.vendorDelete = false;
+        $scope.vendorMain = false;
         $scope.showClientPrompt = true;
       }       
       else
       {
+        $location.url('/MainVendor');
         $scope.messageVendor = "Welcome Vendor, " + vendorName;
         $scope.showCart = false;
         $scope.clientMain = false;
@@ -51,7 +52,7 @@ index.controller('indexController', function($scope, $rootScope){
         $scope.clientDrinks = false;
         $scope.clientProducts = false;
         $scope.vendorAdd = true;
-        $scope.vendorDelete = true;
+        $scope.vendorMain = true;
       }
       $scope.showLogin = false;
       $scope.showRegister = false;
@@ -59,6 +60,8 @@ index.controller('indexController', function($scope, $rootScope){
     }
   };
   $scope.onLogout = function() {
+    $rootScope.$emit("DisableCart",{});
+
     if(localStorage.getItem("ClientId") != null)
       localStorage.removeItem("ClientId");
     if(localStorage.getItem("VendorId") != null)
@@ -75,7 +78,7 @@ index.controller('indexController', function($scope, $rootScope){
     $scope.clientDrinks = true;
     $scope.clientProducts = true;
     $scope.vendorAdd = false;
-    $scope.vendorDelete = false;
+    $scope.vendorMain = false;
     $scope.showLogout = false;
   }
 });

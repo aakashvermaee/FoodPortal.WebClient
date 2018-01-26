@@ -44,6 +44,29 @@
         <div>Drinks</div>
       </a>
 </div>
+<hr>
+<br/><br/>
+<div class='container-fluid items'>
+    <table cellspacing="0" cellpadding="0" class="table table-condensed table-stripped">
+        <tr>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Offer</th>
+          <th>Action</th>
+        </tr>
+          <tr ng-repeat="Product in Products">
+            <td>{{Product.Name}}</td>
+            <td>{{Product.Category}}</td>
+            <td>{{Product.Price}}</td>
+            <td>
+                <span ng-if="Product.Offer == true">Offers Available</span>
+                <span ng-if="Product.Offer != true">No Offers</span>
+            </td>
+            <td><button value="{{Product.ProductId}}" ng-model="id" ng-click="AddToCart($event)" ng-hide="disableCart">AddToCart</button></td>
+          </tr>
+        </table>
+</div>
 
 <style>
 #imgcontainer{
@@ -55,6 +78,9 @@
   height: 450px;
   width: inherit;
   margin-bottom: 1%;
+}
+table { 
+  border: none;
 }
 
 .over-search{
