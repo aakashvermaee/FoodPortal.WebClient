@@ -233,7 +233,8 @@ myApp.controller('categoriesController', ['$scope', '$http', 'AddToCartService',
 //cartController
 myApp.controller('cartController', ['$scope', '$http', 'DeleteFromCartService', function($scope, $http, DeleteFromCartService){
   $scope.responsecart;
-  console.log($scope.responsecart);
+  var len = 0;
+  var total_price = [];
   $scope.id;
     var obj = {
       ClientId: localStorage.getItem("ClientId")
@@ -244,61 +245,73 @@ myApp.controller('cartController', ['$scope', '$http', 'DeleteFromCartService', 
       data: JSON.stringify(obj),
       headers: { 'content-type': 'application/json' }
     }).then(function successCallBack(response) {
-          console.log(response.data);
           $scope.responsecart = response.data;
-      }), function (errorResponse) {
+          len = response.data.length;
+          $scope.initializeArray();
+      }, function errorCallBack(errorResponse) {
           console.log(errorResponse.data);
-      };
+      });
 
   //Quantity Positive
   //$scope.responsecart.total;
-  $scope.price = 1;
-  $scope.total = 0;
-  $scope.qty = 1;
-  $scope.grandtotal = 0;
+  $scope.initializeArray = function() {
+    $scope.price = 1;
+    $scope.qty = 1;
+    $scope.grandtotal = 0;
+    total_price = new Array(len);
+    for(var i=0; i < len; i++) {
+        total_price[i] = $scope.responsecart[i].Price;
+        $scope.grandtotal += total_price[i];
+    }
+  }
 
-  $scope.posistiveQty = function(element, id){
-    // debugger
-    var value = parseInt(element.currentTarget.value);
-    if(value == 0){
+  $scope.posistiveQty = function(qty, index){
+    $scope.grandtotal = 0;
+    if(qty == 0){
       alert("Value can't be zero!");
     }
-    else if(value < 0)
+    else if(qty < 0) {
       alert("Value can't be negative!");
+    }
+    total_price[index] = qty * $scope.responsecart[index].Price;
+    for(var i=0; i < len; i++) {
+        $scope.grandtotal += total_price[i];
+    }
+    console.log(total_price);
 
-    var obj = {"Id":'', "Value":''};
-    var len = $scope.responsecart.length;
-    var store = new Object(localStorage.getItem('qtys'));
-    if(store == null){
-      store = Array(len).fill(0);
-    }
-    for(var i=0; i < len; i++){
-      if(store[i] == 0){
-        obj.Id = JSON.stringify(id);
-        obj.Value = JSON.stringify(value);
-        store[i] = obj;
-        break;
-      } else {
-          if(store[i].Id == id) {
-            store[i].Value = value;
-            break;
-          }else{
-            continue;
-          }
-      }
-    }
-    localStorage.setItem('qtys', store);
+    // var obj = {"Id":'', "Value":''};
+    // var len = $scope.responsecart.length;
+    // var store = new Object(localStorage.getItem('qtys'));
+    // if(store == null){
+    //   store = Array(len).fill(0);
+    // }
+    // for(var i=0; i < len; i++){
+    //   if(store[i] == 0){
+    //     obj.Id = JSON.stringify(id);
+    //     obj.Value = JSON.stringify(value);
+    //     store[i] = obj;
+    //     break;
+    //   } else {
+    //       if(store[i].Id == id) {
+    //         store[i].Value = value;
+    //         break;
+    //       }else{
+    //         continue;
+    //       }
+    //   }
+    // }
+    // localStorage.setItem('qtys', store);
   };
 
   //fill quantity
-  $scope.fillQuantityOnLoad = function(){
-    var QTYS = localStorage.getItem('qtys');
-    QTYS =   JSON.parse(QTYS);
-      // for(var i=0; i < QTYS.length; i++) {
-      //   console.log(QTYS);
-      // }
-      console.log(QTYS[1].value);
-  }
+//   $scope.fillQuantityOnLoad = function(){
+//     var QTYS = localStorage.getItem('qtys');
+//     QTYS =   JSON.parse(QTYS);
+//       // for(var i=0; i < QTYS.length; i++) {
+//       //   console.log(QTYS);
+//       // }
+//       console.log(QTYS[1].value);
+//   }
   //Delete from cart
   $scope.DeleteProduct = function (element) {
     $scope.id = element.currentTarget.value;

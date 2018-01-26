@@ -16,14 +16,14 @@
       <td>{{d.Price}}</td>
       <td>{{d.Offer}}</td>
       <td>{{d.Category}}</td>
-      <td><input type='number' ng-blur="posistiveQty($event, d.ProductId)" value='1' focus-me='setfocus' ng-model='qty'
+      <td><input type='number' ng-model='qty' ng-change="posistiveQty(qty, $index)" focus-me='setfocus'
         id='{{d.ProductId}}'></td>
       <td>{{total = qty * d.Price}}</td>
       <td><button value='{{d.ProductId}}' ng-model='id' ng-click="DeleteProduct($event)">Delete</button></td>
     </tr>
     <tr>
         <td colspan="5"><b>Grand Total</b></td>
-        <td colspan="2">{{total}}</td>
+        <td colspan="2">{{grandtotal}}</td>
     </tr>
   </table>
 </div>
