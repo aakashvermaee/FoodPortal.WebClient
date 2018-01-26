@@ -1,83 +1,79 @@
+/*global angular */
 var myApp = angular.module('FoodPortal', ['ngRoute', 'services', 'indexModule']);
 var uri = "http://localhost:52281/api/";
 
-myApp.config(function($routeProvider) {
+myApp.config(function ($routeProvider) {
   // $locationProvider.hashPrefix('');
-  $routeProvider
+   $routeProvider
   .when('/', {
-    url:"/",
-    templateUrl:"views/main.html",
-    controller:"mainController"
+    url: "/",
+    templateUrl: "views/main.html",
+    controller: "mainController"
   })
-  
+
   .when('/Products', {
-    url:"/Products",
-    templateUrl:"views/Products/Products.html",
-    controller:"productsController"
+    url: "/Products",
+    templateUrl: "views/Products/Products.html",
+    controller: "productsController"
   })
 
   .when('/Beverages', {
-    url:"/Beverages",
-    templateUrl:"views/Products/beverages.html",
-    controller:"categoriesController"
+    url: "/Beverages",
+    templateUrl: "views/Products/beverages.html",
+    controller: "categoriesController"
   })
 
   .when('/Snacks', {
-    url:"/Snacks",
-    templateUrl:"views/Products/snacks.html",
-    controller:"categoriesController"
+    url: "/Snacks",
+    templateUrl: "views/Products/snacks.html",
+    controller: "categoriesController"
   })
 
   .when('/Drinks', {
-    url:"/Drinks",
-    templateUrl:"views/Products/drinks.html",
-    controller:"categoriesController"
+    url: "/Drinks",
+    templateUrl: "views/Products/drinks.html",
+    controller: "categoriesController"
   })
 
   .when('/Cart', {
-    url:"/Cart",
+    url: "/Cart",
     templateUrl: "views/cart/usercart.html",
     controller: "cartController"
   })
 
   .when('/Login', {
-    url:"/Login",
+    url:  "/Login",
     templateUrl:"views/users/login.html",
-    controller:"loginController"
+    controller: "loginController"
   })
 
-  // .when('/Login', {
-  //   url:"/Login",
-  //   templateUrl:"views/users/login.html",
-  //   controller:"loginController"
-  // })
-
   .when('/Register', {
-    url:"/Register",
-    templateUrl:"views/users/register.html",
-    controller:"registerController"
+    url: "/Register",
+    templateUrl: "views/users/register.html",
+    controller: "registerController"
   })
 
   .when('/AddProduct', {
-    url:"/AddProduct",
-    templateUrl:"views/Products/AddProduct.html",
-    controller:"AddProductController"
+    url: "/AddProduct",
+    templateUrl: "views/Products/AddProduct.html",
+    controller: "AddProductController"
   })
 
   .when('/DeleteProduct', {
-    url:"/DeleteProduct",
-    templateUrl:"views/Products/DeleteProduct.html",
-    controller:"DeleteProductController"
+    url: "/DeleteProduct",
+    templateUrl: "views/Products/DeleteProduct.html",
+    controller: "DeleteProductController"
   })
 
   .when('/ChangePassword',{
-    url:"/ChangePassword",
-    templateUrl:"views/users/changePassword.html",
-    controller:"PasswordController"
+    url: "/ChangePassword",
+    templateUrl: "views/users/changePassword.html",
+    controller: "PasswordController"
   })
 });
 
-myApp.controller('mainController', ['$scope', '$http', '$log', 'AddToCartService', function($scope, $http, $log, AddToCartService){
+myApp.controller('mainController', ['$scope', '$http', '$log', 'AddToCartService',
+function($scope, $http, $log, AddToCartService){
   //search
   $scope.searchString;
   $scope.Products;
@@ -98,10 +94,10 @@ myApp.controller('mainController', ['$scope', '$http', '$log', 'AddToCartService
           $scope.Products = errorResponse.data;
     };
   };
-  
+
   //scope var: To store value(id) of a clicked button
   $scope.id;
-  
+
   //function to add particular product to the cart
   $scope.AddToCart = function (element) {
       $scope.id = element.currentTarget.value;
@@ -160,6 +156,7 @@ myApp.controller('categoriesController', ['$scope', '$http', 'AddToCartService',
 //cartController
 myApp.controller('cartController', ['$scope', '$http', 'DeleteFromCartService', function($scope, $http, DeleteFromCartService){
   $scope.responsecart;
+  console.log($scope.responsecart);
   $scope.id;
     var obj = {
       ClientId: localStorage.getItem("ClientId")
@@ -176,16 +173,55 @@ myApp.controller('cartController', ['$scope', '$http', 'DeleteFromCartService', 
           console.log(errorResponse.data);
       };
 
-  //Quantity Multiplier
-  $scope.price;
-  $scope.total;
-  //$scope.qty;
-  $scope.multiply = function(event) {
-    var _price = parseInt(event.currentTarget.value);
-    console.log(_price);
-    $scope.total = _price;
-  } 
+  //Quantity Positive
+  //$scope.responsecart.total;
+  $scope.price = 1;
+  $scope.total = 0;
+  $scope.qty = 1;
+  $scope.grandtotal = 0;
 
+  $scope.posistiveQty = function(element, id){
+    // debugger
+    var value = parseInt(element.currentTarget.value);
+    if(value == 0){
+      alert("Value can't be zero!");
+    }
+    else if(value < 0)
+      alert("Value can't be negative!");
+
+    var obj = {"Id":'', "Value":''};
+    var len = $scope.responsecart.length;
+    var store = new Object(localStorage.getItem('qtys'));
+    if(store == null){
+      store = Array(len).fill(0);
+    }
+    for(var i=0; i < len; i++){
+      if(store[i] == 0){
+        obj.Id = JSON.stringify(id);
+        obj.Value = JSON.stringify(value);
+        store[i] = obj;
+        break;
+      } else {
+          if(store[i].Id == id) {
+            store[i].Value = value;
+            break;
+          }else{
+            continue;
+          }
+      }
+    }
+    localStorage.setItem('qtys', store);
+  };
+
+  //fill quantity
+  $scope.fillQuantityOnLoad = function(){
+    var QTYS = localStorage.getItem('qtys');
+    QTYS =   JSON.parse(QTYS);
+      // for(var i=0; i < QTYS.length; i++) {
+      //   console.log(QTYS);
+      // }
+      console.log(QTYS[1].value);
+  }
   //Delete from cart
   $scope.DeleteProduct = function (element) {
     $scope.id = element.currentTarget.value;
@@ -205,7 +241,7 @@ myApp.controller('loginController', ['$scope', '$http', '$window', '$rootScope',
 
     $scope.onLoad = function () {
         if (localStorage.getItem("ClientId") != null) {
-          $window.location.href = '/view/ClientIndex';     
+          $window.location.href = '/view/ClientIndex';
         }
         else if (localStorage.getItem("VendorId") != null) {
           $window.location.href = '/Main/VendorIndex';
@@ -234,14 +270,14 @@ myApp.controller('loginController', ['$scope', '$http', '$window', '$rootScope',
                 localStorage.setItem("ClientId", response.data);
                 $scope.loginMessage = response.data;
                 $rootScope.$emit("CallOnLogin",{});
-                $scope.showLoginMessage = true;    
+                $scope.showLoginMessage = true;
                 //redirect to state: '/'
                 $location.url('/');
                 alert(localStorage.getItem("ClientId") + "" + "is now logged in");
             }, function errorCallback(response) {
                 $scope.loginMessage = "Error !! Kindly check your credentials";
                 $scope.showLoginMessage = true;
-                
+
             });
         }
         else {
@@ -266,6 +302,7 @@ myApp.controller('loginController', ['$scope', '$http', '$window', '$rootScope',
                 $rootScope.$emit("CallOnLogin", {});
                 //$state.transitionTo('', {arg: 'arg'});
                 //$window.location.href = '/Main/VendorIndex';
+                $location.url('/AddProduct');
             }, function errorCallback(response) {
                 $scope.loginMessage = "Error !! Kindly check your credentials";
                 $scope.showLoginMessage = true;
@@ -318,7 +355,7 @@ myApp.controller('PasswordController', function ($scope, $http, $window) {
   $scope.changePassword = function () {
      if(localStorage.getItem("ClientId") != null)
       changePasswordClient();
-      else 
+      else
       changePasswordVendor();
   }
 

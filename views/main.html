@@ -1,21 +1,98 @@
-<h2>Main</h2>
+<div class="container col-md-12">
+  <img id="banner" class='img-responsive img-rounded' src='./content/images/banner1.jpg'>
+  <div class="overimage row">
+    <form class="form-inline form-group">
+      <span class="glyphicon glyphicon-search form-control form-control-sm over-search "></span>
+      <input id='search' class="form-control form-control-lg" type="text" placeholder="Search...." ng-model="searchString"/>
+      <button class="btn btn-primary" type="submit" ng-click="searchProduct()">Search</button>
+    </form>
+  </div>
+</div>
 
-<form class="form-inline">
-  <input class="form-control mr-sm-2" type="text" placeholder="Search...." ng-model="searchString"/>
-  <button class="btn btn-outline-success my-2 my-sm-0" type="submit" ng-click="searchProduct()">Search</button>
-</form>
+<!-- <div class="container">
+  <div class="container card" style="width: 30rem; border:1px solid gray">
+  <div class="card-block" ng-repeat="Product in Products">
+    <h4 class="card-title">{{Product.Name}}</h4>
+    <p class="card-text">{{Product.Price}}</p>
+    <p class="card-text">{{Product.Category}}</p>
+    <p class="card-text">{{Product.Offer}}</p>
+    <button class="btn btn-primary" ng-click=''>Add to Cart</button>
+  </div>
+</div>
+</div> -->
 
-<table class="table table-condensed table-stripped">
-<tr>
-  <th>Name</th>
-  <th>Category</th>
-  <th>Price</th>
-  <th>Offer</th>
-</tr>
-  <tr ng-repeat="Product in Products">
-    <td>{{Product.Name}}</td>
-    <td>{{Product.Category}}</td>
-    <td>{{Product.Price}}</td>
-    <td>{{Product.Offer}}</td>
-  </tr>
-</table>
+<div class='container-fluid'>
+  <h4>Quick Searches</h4>
+  <p>Discover products by categories</p>
+</div>
+
+<div class='container-fluid items' id="btns">
+      <a href='#!/Products' class="col-md-3 items-img" >
+        <img src='https://b.zmtcdn.com/images/search_tokens/app_icons/category_1.png'/>
+        <div>Products</div>
+      </a>
+      <a  href='#!/Beverages' class="col-md-3 items-img">
+        <img src='https://b.zmtcdn.com/images/search_tokens/app_icons/category_3.png'/>
+        <div>Beverages</div>
+      </a>
+      <a  href='#!/Snacks' class="col-md-3 items-img">
+        <img src='https://b.zmtcdn.com/images/search_tokens/app_icons/category_9.png'/>
+        <div>Snacks</div>
+      </a>
+      <a  href='#!/Drinks' class="col-md-3 items-img">
+        <img src='https://b.zmtcdn.com/images/search_tokens/app_icons/special_23.png'/>
+        <div>Drinks</div>
+      </a>
+</div>
+
+<style>
+#imgcontainer{
+  position:relative;
+  border: 1px solid black;
+}
+#banner{
+  -webkit-filter: blur(1.4px);filter: blur(1.4px);
+  height: 450px;
+  width: inherit;
+  margin-bottom: 1%;
+}
+
+.over-search{
+  background-color: white;
+  left: 1.8%;
+  display: inline;
+  border: 0px;
+  top:-0.1%
+}
+.overimage{
+  position: absolute;
+  left:55%;
+  top:85%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  border: 0px solid black;
+  width:50%;
+}
+.overimage input{
+  display: inline;
+  background-color: white;
+  border: 0px;
+}
+#search{
+  width:70%;
+}
+a{
+  text-align: center;
+  text-shadow: 1px;
+}
+.items{
+  margin-bottom: 1%;
+}
+.items img{
+  width: 50px; height: 50px; display: inline-block;
+}
+.items-img:hover{
+  -webkit-filter: blur(0.8px);
+  filter: blur(0.8px);
+}
+</style>

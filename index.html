@@ -9,14 +9,14 @@
   <script src='./scripts/angularmodules/indexModule.js'></script>
   <script src='./scripts/js/jquery.js'></script>
   <script src='./scripts/js/LoginRegister.js'></script>
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
   <link href="./content/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
   <title>Index</title>
 </head>
 <body ng-app="FoodPortal" ng-controller="indexController" data-ng-init="onInit()">
     <div class="container" style="width:100%;">
-        <nav class="nav navbar-inverse">  
+        <nav class="container-fluid nav navbar-inverse navbar-fixed-top">
       <div class="collapse navbar-collapse" id="navbarNav">
-          
           <ul class="nav navbar-nav">
             <li><a class="nav-item nav-link active" href="#!/AddProduct" ng-show="vendorAdd">Add Product</a></li>
             <li><a class="nav-item nav-link active" href="#!/DeleteProduct" ng-show="vendorDelete">Delete Product</a></li>
@@ -25,7 +25,7 @@
             <li><a class="nav-item nav-link" href="#!/Beverages" ng-show="clientBeverages">Beverages</a></li>
             <li><a class="nav-item nav-link" href="#!/Snacks" ng-show="clientSnacks">Snacks</a></li>
             <li><a class="nav-item nav-link" href="#!/Drinks" ng-show="clientDrinks">Drinks</a></li>
-          </ul> 
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a class="nav-item nav-link" href="#!/" ng-show="showClientPrompt"> {{messageClient}} </a></li>
             <li><a class="nav-item nav-link" href="#!/AddProduct" ng-show="showVendorPrompt"> {{messageVendor}} </a></li>
@@ -42,7 +42,14 @@
         </div>
       </nav>
     </div>
-    <div class="container" ng-view></div>
+
+    <div class="container-fluid" ng-view></div>
   </div>
 </body>
+
+<style>
+  body{
+    margin-top: 2%;
+  }
+</style>
 </html>
