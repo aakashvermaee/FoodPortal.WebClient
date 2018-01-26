@@ -278,40 +278,8 @@ myApp.controller('cartController', ['$scope', '$http', 'DeleteFromCartService', 
         $scope.grandtotal += total_price[i];
     }
     console.log(total_price);
-
-    // var obj = {"Id":'', "Value":''};
-    // var len = $scope.responsecart.length;
-    // var store = new Object(localStorage.getItem('qtys'));
-    // if(store == null){
-    //   store = Array(len).fill(0);
-    // }
-    // for(var i=0; i < len; i++){
-    //   if(store[i] == 0){
-    //     obj.Id = JSON.stringify(id);
-    //     obj.Value = JSON.stringify(value);
-    //     store[i] = obj;
-    //     break;
-    //   } else {
-    //       if(store[i].Id == id) {
-    //         store[i].Value = value;
-    //         break;
-    //       }else{
-    //         continue;
-    //       }
-    //   }
-    // }
-    // localStorage.setItem('qtys', store);
   };
 
-  //fill quantity
-//   $scope.fillQuantityOnLoad = function(){
-//     var QTYS = localStorage.getItem('qtys');
-//     QTYS =   JSON.parse(QTYS);
-//       // for(var i=0; i < QTYS.length; i++) {
-//       //   console.log(QTYS);
-//       // }
-//       console.log(QTYS[1].value);
-//   }
   //Delete from cart
   $scope.DeleteProduct = function (element) {
     $scope.id = element.currentTarget.value;
@@ -329,17 +297,6 @@ myApp.controller('loginController', ['$scope', '$http', '$window', '$rootScope',
     $scope.regexContact = "^[0-9]*$";
     $scope.showLoginMessage = false;
 
-    // $scope.onLoad = function () {
-    //     if (localStorage.getItem("ClientId") != null) {
-    //       $window.location.href = '/view/ClientIndex';
-    //     }
-    //     else if (localStorage.getItem("VendorId") != null) {
-    //       $window.location.href = '/Main/VendorIndex';
-    //     }
-    //     else {
-    //       $window.location.href = '/Home/Index1';
-    //     }
-    // };
     $scope.Login = function () {
         if (!$scope.loginAsVendor) {
             var dataObj = {
