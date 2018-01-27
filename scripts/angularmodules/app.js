@@ -122,7 +122,22 @@ function($scope, $http, $log, AddToCartService, $rootScope){
 
 myApp.controller('mainVendorController', ['$scope', '$http', '$log', 'AddToCartService', '$rootScope',
 function($scope, $http, $log, AddToCartService, $rootScope){
-  //search
+    // secure access only
+    if(localStorage.getItem("ClientId") == null && localStorage.getItem("VendorId") == null) {
+        $scope.showMain = false;
+        $scope.showError = true;
+    }
+    else if(localStorage.getItem("VendorId") == null && localStorage.getItem("ClientId") != null) {
+        $scope.showMain = false;
+        $scope.showError = true;
+    }
+    else {
+        $scope.showMain = true;
+        $scope.showError = false;
+    }
+    //----------------------
+  
+    //search
   $scope.hide_loading = true;
   $scope.searchString;
   $scope.Products;
@@ -238,6 +253,20 @@ myApp.controller('categoriesController', ['$scope', '$http', 'AddToCartService',
 
 //cartController
 myApp.controller('cartController', ['$scope', '$http', 'DeleteFromCartService', function($scope, $http, DeleteFromCartService){
+    // secure access only
+    if(localStorage.getItem("ClientId") == null && localStorage.getItem("VendorId") == null) {
+        $scope.showMain = false;
+        $scope.showError = true;
+    }
+    else if(localStorage.getItem("VendorId") != null && localStorage.getItem("ClientId") == null) {
+        $scope.showMain = false;
+        $scope.showError = true;
+    }
+    else {
+        $scope.showMain = true;
+        $scope.showError = false;
+    }
+    //----------------------
   $scope.responsecart;
   var len = 0;
   var total_price = [];
@@ -366,6 +395,21 @@ myApp.controller('loginController', ['$scope', '$http', '$window', '$rootScope',
 
 //vendor
 myApp.controller('AddProductController', function ($scope, $http) {
+    // secure access only
+    if(localStorage.getItem("ClientId") == null && localStorage.getItem("VendorId") == null) {
+        $scope.showMain = false;
+        $scope.showError = true;
+    }
+    else if(localStorage.getItem("VendorId") == null && localStorage.getItem("ClientId") != null) {
+        $scope.showMain = false;
+        $scope.showError = true;
+    }
+    else {
+        $scope.showMain = true;
+        $scope.showError = false;
+    }
+    //----------------------
+    
   $scope.categories = ["Beverages", "Snacks", "Drinks"];
   $scope.p = {};
   $scope.AddProduct = function () {
@@ -383,13 +427,23 @@ myApp.controller('AddProductController', function ($scope, $http) {
 });
 
 myApp.controller('PasswordController', function ($scope, $http, $window) {
+    // secure access only
+  if(localStorage.getItem("ClientId") == null && localStorage.getItem("VendorId") == null) {
+      $scope.showMain = false;
+      $scope.showError = true;
+  }
+  else {
+      $scope.showMain = true;
+      $scope.showError = false;
+  }
+  //----
   $scope.passwordChanged = false;
   $scope.passwordEquality = function () {
     if ($scope.newPassword != $scope.confirmPassword) {
       $scope.IsMatch = true;
     }
     else  $scope.IsMatch = false;
-};
+  };
   $scope.changePassword = function () {
      if(localStorage.getItem("ClientId") != null)
       changePasswordClient();

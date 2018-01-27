@@ -1,22 +1,27 @@
-<h3> Enter Product Details </h3> <br/>
-<form novalidate name="addProduct" ng-submit="AddProduct()" method="post" role="form" style="display: block;">
-    <div class="form-group text-center">
-        <input type="text" name="name" id="name" ng-model="p.Name" tabindex="1" class="form-control" placeholder="Name" value="" required>        
-    </div>
-    <div class="form-group">
-        <select ng-model="p.Category" ng-options="option for option in categories" ng-init="p.Category = categories[0]" tabindex="2" class="form-control"></select>           
-    </div>
-    <div class="form-group">
-        <input type="number" step="0.01" name="price" id="price" ng-model="p.Price" tabindex="3" class="form-control" placeholder="Price" required>        
-    </div>
-    <div class="form-group">
-        <input type="checkbox" tabindex="5" class="" ng-model="p.Offer" name="offer" id="offer">
-        <label for="offer"> Mark as an offer </label>
-    </div>
-    <div class="form-group">
-        <input type="number" name="quantity" id="price" ng-model="p.Quantity" tabindex="4" class="form-control" placeholder="Quantity" required>        
-    </div>
-    <div class="form-group">
-        <input type="submit" tabindex="6" value="Add Product" />       
-    </div>
-</form>
+<div ng-show="showMain">
+        <h3> Enter Product Details </h3> <br/>
+        <form novalidate name="addProduct" ng-submit="AddProduct()" method="post" role="form" style="display: block;">
+            <div class="form-group text-center">
+                <input type="text" name="name" id="name" ng-model="p.Name" tabindex="1" class="form-control" placeholder="Name" value="" required>        
+            </div>
+            <div class="form-group">
+                <select ng-model="p.Category" ng-options="option for option in categories" ng-init="p.Category = categories[0]" tabindex="2" class="form-control"></select>           
+            </div>
+            <div class="form-group">
+                <input type="number" step="0.01" name="price" id="price" ng-model="p.Price" tabindex="3" class="form-control" placeholder="Price" required>        
+            </div>
+            <div class="form-group">
+                <input type="checkbox" tabindex="5" class="" ng-model="p.Offer" name="offer" id="offer">
+                <label for="offer"> Mark as an offer </label>
+            </div>
+            <div class="form-group">
+                <input type="number" name="quantity" id="price" ng-model="p.Quantity" tabindex="4" class="form-control" placeholder="Quantity" required>        
+            </div>
+            <div class="form-group">
+                <input type="submit" tabindex="6" value="Add Product" />       
+            </div>
+        </form>
+</div>
+<div ng-show="showError">
+    <h2> Sorry, Page can't be accessed </h2>
+</div>
