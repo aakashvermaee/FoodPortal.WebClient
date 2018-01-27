@@ -75,6 +75,7 @@ myApp.config(function ($routeProvider) {
 myApp.controller('mainController', ['$scope', '$http', '$log', 'AddToCartService', '$rootScope',
 function($scope, $http, $log, AddToCartService, $rootScope){
   //search
+  $scope.hide_loading = true;
   $scope.searchString;
   $scope.Products;
   $scope.disableCart = false;
@@ -82,6 +83,7 @@ function($scope, $http, $log, AddToCartService, $rootScope){
     $scope.disableCart = true;
   })
   $scope.searchProduct = function () {
+      $scope.hide_loading = false;
     var searchProduct = {
       "Name" : $scope.searchString
     };
@@ -100,6 +102,7 @@ function($scope, $http, $log, AddToCartService, $rootScope){
         if(response.data.length == 0)
             alert('No search results !!');
         $scope.Products = response.data;
+        $scope.hide_loading = true;
       }), function errorCallBack(errorResponse) {
           $scope.Products = errorResponse.data;
     };
@@ -120,9 +123,11 @@ function($scope, $http, $log, AddToCartService, $rootScope){
 myApp.controller('mainVendorController', ['$scope', '$http', '$log', 'AddToCartService', '$rootScope',
 function($scope, $http, $log, AddToCartService, $rootScope){
   //search
+  $scope.hide_loading = true;
   $scope.searchString;
   $scope.Products;
   $scope.searchProduct = function () {
+    $scope.hide_loading = false;
     var searchProduct = {
       "Name" : $scope.searchString
     };
@@ -141,6 +146,7 @@ function($scope, $http, $log, AddToCartService, $rootScope){
         if(response.data.length == 0)
             alert('No search results !!');
         $scope.Products = response.data;
+        $scope.hide_loading = true;
       }), function errorCallBack(errorResponse) {
           $scope.Products = errorResponse.data;
     };

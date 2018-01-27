@@ -3,8 +3,9 @@
   <div class="overimage row">
     <form class="form-inline form-group">
       <span class="glyphicon glyphicon-search form-control form-control-sm over-search "></span>
-      <input id='search' class="form-control form-control-lg" type="text" placeholder="Search...." ng-model="searchString"/>
+      <input id='search' class="form-control form-control-lg" type="text" ng-change="searchProduct()" placeholder="Search...." ng-model="searchString"/>
       <button class="btn btn-primary" type="submit" ng-click="searchProduct()">Search</button>
+      <img id="loading" ng-hide="hide_loading" class='img-responsive img-rounded' width="40" height="40" src='./content/images/loading_spinner.gif'/>
     </form>
   </div>
 </div>
@@ -82,7 +83,9 @@
 table { 
   border: none;
 }
-
+#loading {
+  float: right;
+}
 .over-search{
   background-color: white;
   left: 1.8%;
