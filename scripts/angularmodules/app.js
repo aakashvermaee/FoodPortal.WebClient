@@ -47,6 +47,12 @@ myApp.config(function ($routeProvider) {
     controller: "cartController"
   })
 
+  .when('/Conformorder', {
+    url: "/Conformorder",
+    templateUrl: "views/orders/conformorder.html",
+    controller: "ordersController"
+  })
+
   .when('/Login', {
     url:  "/Login",
     templateUrl:"views/users/login.html",
@@ -136,7 +142,7 @@ function($scope, $http, $log, AddToCartService, $rootScope){
         $scope.showError = false;
     }
     //----------------------
-  
+
     //search
   $scope.hide_loading = true;
   $scope.searchString;
@@ -252,7 +258,7 @@ myApp.controller('categoriesController', ['$scope', '$http', 'AddToCartService',
 }]);
 
 //cartController
-myApp.controller('cartController', ['$scope', '$http', 'DeleteFromCartService', function($scope, $http, DeleteFromCartService){
+myApp.controller('cartController', ['$scope', '$http', '$rootScope', 'DeleteFromCartService', '$location', function($scope, $http, $rootScope, DeleteFromCartService, $location) {
     // secure access only
     if(localStorage.getItem("ClientId") == null && localStorage.getItem("VendorId") == null) {
         $scope.showMain = false;
@@ -268,6 +274,9 @@ myApp.controller('cartController', ['$scope', '$http', 'DeleteFromCartService', 
     }
     //----------------------
   $scope.responsecart;
+  $scope.pid;
+  // $scope.qtys_pid=[];
+
   var len = 0;
   var flag = 0;
   $scope.disableOrder = false;
@@ -302,7 +311,10 @@ myApp.controller('cartController', ['$scope', '$http', 'DeleteFromCartService', 
     }
   }
 
-  $scope.posistiveQty = function(qty, index){
+  //
+  $scope.qtys_pid = new Array(len).fill(1);
+
+  $scope.posistiveQty = function(qty, index) {
     $scope.grandtotal = 0;
     $scope.maxQuantity = $scope.responsecart[index].Quantity;
     if(qty == 0){
@@ -325,13 +337,19 @@ myApp.controller('cartController', ['$scope', '$http', 'DeleteFromCartService', 
         $scope.grandtotal += total_price[i];
     }
     console.log(total_price);
+    localStorage.setItem('grandtotal', $scope.grandtotal);
     if(flag == 1)
     {
       $scope.disableOrder = true;
     }
     else{
-        $scope.disableOrder = false;
+      $scope.disableOrder = false;
     }
+
+    //$scope.qtys_pid = new Array($scope.responsecart.length).fill(1);
+    //console.log(index);
+    $scope.qtys_pid[index] = qty;
+    // console.log(qty);
   };
 
   //Delete from cart
@@ -342,11 +360,93 @@ myApp.controller('cartController', ['$scope', '$http', 'DeleteFromCartService', 
     location.reload();
   };
 
-  $scope.PlaceOrder = function() 
-    {
-    alert('Order placed successfully !!');
+  $scope.PlaceOrder = function() {
+    //alert('Order placed successfully!!');
+    var username = localStorage.getItem('ClientId');
+    var payment;
+    var paymentstatus;
+
+    $scope.pid = new Array($scope.responsecart.length);
+    console.log($scope.qtys_pid);
+
+    for(var i=0; i < $scope.pid.length; i++){
+      $scope.pid[i] = $scope.responsecart[i].ProductId;
+      var cart = {
+        ProductId: $scope.pid[i],
+        ClientId: localStorage.getItem('ClientId'),
+        Quantity : $scope.qtys_pid[i]
+      };
+      $http({
+        method : 'POST',
+        url : uri + 'Carts/PostQuantity/',
+        data : JSON.stringify(cart),
+        headers : {'content-type' : 'application/json'}
+      }).then(function success(response){
+        console.log(response.data);
+      }), function error(errorResponse){
+        console.log(errorResponse.data);
+      };
     }
+    $rootScope.$on('CallToreduceQuantity', function() {
+        for(var i=0; i < $scope.pid.length; i++){
+          //$scope.pid[i] = $scope.responsecart[i].ProductId;
+          var cart = {
+            ProductId: $scope.pid[i],
+            ClientId: localStorage.getItem('ClientId'),
+            Quantity : $scope.qtys_pid[i]
+          };
+
+          $http({
+            method : 'POST',
+            url : uri + 'Orders/ReduceQuantity/',
+            data : JSON.stringify(cart),
+            headers : {'content-type' : 'application/json'}
+          }).then(function success(response){
+            console.log(response.data);
+          }), function error(errorResponse){
+            console.log(errorResponse.data);
+          };
+        }
+    });
+    $location.url('/Conformorder');
+  };
+
+
 }]);
+
+//orders controller
+myApp.controller('ordersController', function($scope, $http, $rootScope) {
+  $scope.username;
+  $scope.total;
+  $scope.paymentstatus;
+
+  var getDetails = function() {
+    $scope.username = localStorage.getItem('ClientId');
+    $scope.total = localStorage.getItem('grandtotal');
+  };
+
+  getDetails();
+
+  $scope.conformorder = function () {
+    $rootScope.$emit('CallToreduceQuantity', {});
+    var dborder = {
+      Username : $scope.username,
+      Payment : $scope.total,
+      Payment_Mode : $scope.paymentstatus
+    };
+    console.log(JSON.stringify(dborder));
+    $http({
+      method : 'POST',
+      data : JSON.stringify(dborder),
+      url : uri + 'Orders/PostOrder/',
+      headers : {'content-type' : 'application/json'}
+    }).then (function success(response){
+      console.log(response.data);
+    }), function error(errorResponse){
+      console.log(errorResponse.data);
+    };
+  };
+})
 
 //loginController
 myApp.controller('loginController', ['$scope', '$http', '$window', '$rootScope', '$location', function($scope, $http, $window, $rootScope, $location) {

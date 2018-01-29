@@ -1,0 +1,27 @@
+<div class="container">
+  <h3>Order Details</h3>
+  <hr/>
+  <table class="table table-bordered table-striped">
+    <tr>
+      <td><h4>Name</h4></td>
+      <td><h4> {{username}}</h4>
+      </td>
+    </tr>
+    <tr>
+      <td><h4>Total Payment</h4></td>
+      <td><h4>${{total}}</h4></td>
+    </tr>
+    <tr>
+      <td><h4>Payment Mode</h4></td>
+      <td><h4>
+        <input type='radio' name='paymentstatus' value='COD' ng-model='paymentstatus' checked/> COD
+        <input type='radio' name='paymentstatus' value='Card' ng-model='paymentstatus'/> Debit/Credit Card
+      </h4></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <button class="btn btn-success" ng-click="conformorder()">Conform Order</button>
+      </td>
+    </tr>
+  </table>
+</div>
