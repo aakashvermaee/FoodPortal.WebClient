@@ -269,6 +269,8 @@ myApp.controller('cartController', ['$scope', '$http', 'DeleteFromCartService', 
     //----------------------
   $scope.responsecart;
   var len = 0;
+  var flag = 0;
+  $scope.disableOrder = false;
   var total_price = [];
   $scope.id;
     var obj = {
@@ -302,17 +304,34 @@ myApp.controller('cartController', ['$scope', '$http', 'DeleteFromCartService', 
 
   $scope.posistiveQty = function(qty, index){
     $scope.grandtotal = 0;
+    $scope.maxQuantity = $scope.responsecart[index].Quantity;
     if(qty == 0){
       alert("Value can't be zero!");
+      flag = 1;
     }
     else if(qty < 0) {
       alert("Value can't be negative!");
+      flag = 1;
+    }
+    else if(qty > $scope.maxQuantity) {
+        flag = 1;
+        alert("Quantity can't exceed " + $scope.maxQuantity);
+    }
+    else {
+        flag = 0;
     }
     total_price[index] = qty * $scope.responsecart[index].Price;
     for(var i=0; i < len; i++) {
         $scope.grandtotal += total_price[i];
     }
     console.log(total_price);
+    if(flag == 1)
+    {
+      $scope.disableOrder = true;
+    }
+    else{
+        $scope.disableOrder = false;
+    }
   };
 
   //Delete from cart
@@ -322,6 +341,11 @@ myApp.controller('cartController', ['$scope', '$http', 'DeleteFromCartService', 
     DeleteFromCartService.Delete($scope.id);
     location.reload();
   };
+
+  $scope.PlaceOrder = function() 
+    {
+    alert('Order placed successfully !!');
+    }
 }]);
 
 //loginController
@@ -409,7 +433,7 @@ myApp.controller('AddProductController', function ($scope, $http) {
         $scope.showError = false;
     }
     //----------------------
-    
+
   $scope.categories = ["Beverages", "Snacks", "Drinks"];
   $scope.p = {};
   $scope.AddProduct = function () {
