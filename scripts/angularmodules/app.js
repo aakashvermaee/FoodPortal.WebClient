@@ -281,6 +281,7 @@ myApp.controller('cartController', ['$scope', '$http', '$rootScope', 'DeleteFrom
   var flag = 0;
   $scope.disableOrder = false;
   var total_price = [];
+  var qtys_pid = [];
   $scope.id;
     var obj = {
       ClientId: localStorage.getItem("ClientId")
@@ -294,6 +295,7 @@ myApp.controller('cartController', ['$scope', '$http', '$rootScope', 'DeleteFrom
           $scope.responsecart = response.data;
           len = response.data.length;
           $scope.initializeArray();
+          $scope.initializeQtys_pid(len);
       }, function errorCallBack(errorResponse) {
           console.log(errorResponse.data);
       });
@@ -310,9 +312,9 @@ myApp.controller('cartController', ['$scope', '$http', '$rootScope', 'DeleteFrom
         $scope.grandtotal += total_price[i];
     }
   }
-
-  //
-  $scope.qtys_pid = new Array(len).fill(1);
+  $scope.initializeQtys_pid = function(len) {
+    qtys_pid = new Array(len).fill(1);
+  }
 
   $scope.posistiveQty = function(qty, index) {
     $scope.grandtotal = 0;
@@ -348,8 +350,8 @@ myApp.controller('cartController', ['$scope', '$http', '$rootScope', 'DeleteFrom
 
     //$scope.qtys_pid = new Array($scope.responsecart.length).fill(1);
     //console.log(index);
-    $scope.qtys_pid[index] = qty;
-    // console.log(qty);
+    qtys_pid[index] = qty;
+    console.log(qtys_pid);
   };
 
   //Delete from cart
@@ -367,14 +369,14 @@ myApp.controller('cartController', ['$scope', '$http', '$rootScope', 'DeleteFrom
     var paymentstatus;
 
     $scope.pid = new Array($scope.responsecart.length);
-    console.log($scope.qtys_pid);
+    console.log(qtys_pid);
 
     for(var i=0; i < $scope.pid.length; i++){
       $scope.pid[i] = $scope.responsecart[i].ProductId;
       var cart = {
         ProductId: $scope.pid[i],
         ClientId: localStorage.getItem('ClientId'),
-        Quantity : $scope.qtys_pid[i]
+        Quantity : qtys_pid[i]
       };
       $http({
         method : 'POST',
@@ -393,7 +395,7 @@ myApp.controller('cartController', ['$scope', '$http', '$rootScope', 'DeleteFrom
           var cart = {
             ProductId: $scope.pid[i],
             ClientId: localStorage.getItem('ClientId'),
-            Quantity : $scope.qtys_pid[i]
+            Quantity : qtys_pid[i]
           };
 
           $http({
@@ -442,8 +444,10 @@ myApp.controller('ordersController', function($scope, $http, $rootScope) {
       headers : {'content-type' : 'application/json'}
     }).then (function success(response){
       console.log(response.data);
+      alert(response.data);
     }), function error(errorResponse){
       console.log(errorResponse.data);
+      alert(errorResponse.data);
     };
   };
 })
