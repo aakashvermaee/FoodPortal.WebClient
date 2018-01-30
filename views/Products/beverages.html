@@ -6,12 +6,13 @@
             <center>
                 <div>
                     <h3> {{eachProduct.Name}} </h3>
+                    <span ng-if="eachProduct.Quantity == 0" style="color:red; font-size:1"> Product out of stock !! <br/> </span>
                     <span> <b>Category:</b> {{eachProduct.Category}} </span> <br/>
                     <span ng-if="Product.Offer == true"><b> Offers: </b>Offers Available</span>
                     <span ng-if="Product.Offer != true"><b> Offers: </b>No Offers</span>
                     <h4> Price: </h4>
                     <h4> INR: {{eachProduct.Price}} </h4> <br/>
-                    <button class="btn btn-primary" value="{{eachProduct.ProductId}}" ng-model="id" ng-click="AddToCart($event)" ng-hide="disableCart">AddToCart</button>
+                    <button class="btn btn-primary" value="{{eachProduct.ProductId}}" ng-model="id" ng-click="AddToCart($event)" ng-hide="disableCart || eachProduct.Quantity == 0">AddToCart</button>
                 </div>
             </center>
     </div>
@@ -19,6 +20,7 @@
 <style>
     .cards{
   width: 25%;
+  height: 250px;
   float: left;
   padding-bottom: 15px;
   margin: 20px;

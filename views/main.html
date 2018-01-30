@@ -10,18 +10,6 @@
   </div>
 </div>
 
-<!-- <div class="container">
-  <div class="container card" style="width: 30rem; border:1px solid gray">
-  <div class="card-block" ng-repeat="Product in Products">
-    <h4 class="card-title">{{Product.Name}}</h4>
-    <p class="card-text">{{Product.Price}}</p>
-    <p class="card-text">{{Product.Category}}</p>
-    <p class="card-text">{{Product.Offer}}</p>
-    <button class="btn btn-primary" ng-click=''>Add to Cart</button>
-  </div>
-</div>
-</div> -->
-
 <div class='container-fluid'>
   <h4>Quick Searches</h4>
   <p>Discover products by categories</p>
@@ -48,23 +36,27 @@
 <hr>
 <br/><br/>
 
-<div class="cards" ng-repeat="Product in Products">
-  <center>
-      <div>
-          <h3> {{Product.Name}} </h3>
-          <span> <b>Category:</b> {{Product.Category}} </span> <br/>
-          <span ng-if="Product.Offer == true"><b> Offers: </b>Offers Available</span>
-          <span ng-if="Product.Offer != true"><b> Offers: </b>No Offers</span>
-          <h4> Price: </h4>
-          <h4> INR: {{Product.Price}} </h4> <br/>
-          <button class="btn btn-primary" value="{{Product.ProductId}}" ng-model="id" ng-click="AddToCart($event)" ng-hide="disableCart">AddToCart</button>
+<div class='container-fluid'>
+    <div class="cards" ng-repeat="Product in Products">
+        <center>
+            <div>
+                <h3> {{Product.Name}} </h3>
+                <span ng-if="Product.Quantity == 0" style="color:red; font-size:1"> Product out of stock !! <br/> </span>
+                <span> <b>Category:</b> {{Product.Category}} </span> <br/>
+                <span ng-if="Product.Offer == true"><b> Offers: </b>Offers Available</span>
+                <span ng-if="Product.Offer != true"><b> Offers: </b>No Offers</span>
+                <h4> Price: </h4>
+                <h4> INR: {{Product.Price}} </h4> <br/>
+                <button class="btn btn-primary" value="{{Product.ProductId}}" ng-model="id" ng-click="AddToCart($event)" ng-hide="disableCart || Product.Quantity == 0">AddToCart</button>
+            </div>
+        </center>
       </div>
-  </center>
 </div>
 
 <style>
 .cards{
   width: 25%;
+  height: 250px;
   float: left;
   padding-bottom: 15px;
   margin: 20px;
