@@ -1,5 +1,6 @@
-<div ng-show="showMain">
-        <h3> Enter Product Details </h3> <br/>
+<div class="col-lg-6" ng-show="showMain">
+        <h3> Enter Product Details </h3>
+        <hr/>
         <form novalidate name="addProduct" ng-submit="AddProduct()" method="post" role="form" style="display: block;">
             <div class="form-group text-center">
                 <input type="text" name="name" id="name" ng-model="p.Name" tabindex="1" class="form-control" placeholder="Name" value="" required>        
@@ -18,7 +19,7 @@
                 <input type="number" name="quantity" id="price" ng-model="p.Quantity" tabindex="4" class="form-control" placeholder="Quantity" required>        
             </div>
             <div class="form-group">
-                <input type="submit" tabindex="6" value="Add Product" />       
+                <input class="btn btn-primary" type="submit" tabindex="6" value="Add Product" />       
             </div>
         </form>
 </div>
