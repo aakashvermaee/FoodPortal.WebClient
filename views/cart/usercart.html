@@ -22,12 +22,11 @@
           <td>{{total = qty * d.Price}}</td>
           <td><button value='{{d.ProductId}}' ng-model='id' ng-click="DeleteProduct($event)">Delete</button></td>
         </tr>
-        <tr>
-            <td colspan="5"><b>Grand Total</b></td>
-            <td colspan="2">{{grandtotal}}</td>
-        </tr>
       </table> <br/>
-      <button  class="btn btn-primary" ng-disabled="disableOrder" ng-model="Order" ng-click="PlaceOrder()"> Place Order </button>
+      <center> 
+        <h3>Grand Total (in INR): &nbsp; <span style="color:green"> {{grandtotal}} </span> </h3> <br/>
+        <button  class="btn btn-primary" ng-disabled="disableOrder" ng-model="Order" ng-click="PlaceOrder()"> Place Order </button>
+      </center>
     </div>    
 </div>
 <div ng-show="showError">

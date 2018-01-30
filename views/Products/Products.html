@@ -1,22 +1,29 @@
 <h1>Products</h1>
 <hr/>
 <div>
-  <table class="table table-striped table-condensed table-bordered">
-    <tr>
-      <th>Name</th>
-      <th>Category</th>
-      <th>Price</th>
-      <th>Offer</th>
-      <th>Quantity</th>
-      <th>Add To Cart</th>
-    </tr>
-    <tr ng-repeat="d in data">
-      <td>{{d.Name}}</td>
-      <td>{{d.Category}}</td>
-      <td>{{d.Price}}</td>
-      <td>{{d.Offer}}</td>
-      <td>{{d.Quantity}}</td>
-      <td><button value='{{d.ProductId}}' ng-model="id" ng-click="AddToCart($event)" ng-hide="disableCart">Add To Cart</button></td>
-    </tr>
-  </table>
+  <div class="cards" ng-repeat="d in data ">
+      <center>
+          <div>
+              <h3> {{d.Name}} </h3>
+              <span> <b>Category:</b> {{d.Category}} </span> <br/>
+              <span ng-if="Product.Offer == true"><b> Offers: </b>Offers Available</span>
+              <span ng-if="Product.Offer != true"><b> Offers: </b>No Offers</span>
+              <h4> Price: </h4>
+              <h4> INR: {{d.Price}} </h4> <br/>
+              <button class="btn btn-primary" value="{{d.ProductId}}" ng-model="id" ng-click="AddToCart($event)" ng-hide="disableCart">AddToCart</button>
+          </div>
+      </center>
 </div>
+</div>
+
+<style>
+    .cards{
+  width: 25%;
+  float: left;
+  padding-bottom: 15px;
+  margin: 20px;
+  align-content: center;
+  border: 2px solid grey;
+  background-color: lightcyan;
+  }
+</style>

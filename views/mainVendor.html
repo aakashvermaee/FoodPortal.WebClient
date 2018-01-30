@@ -11,17 +11,6 @@
         </div>
       </div>
       
-      <!-- <div class="container">
-        <div class="container card" style="width: 30rem; border:1px solid gray">
-        <div class="card-block" ng-repeat="Product in Products">
-          <h4 class="card-title">{{Product.Name}}</h4>
-          <p class="card-text">{{Product.Price}}</p>
-          <p class="card-text">{{Product.Category}}</p>
-          <p class="card-text">{{Product.Offer}}</p>
-          <button class="btn btn-primary" ng-click=''>Add to Cart</button>
-        </div>
-      </div>
-      </div> -->
       
       <div class='container-fluid'>
         <h4>Quick Searches</h4>
@@ -29,27 +18,19 @@
       </div>
       <hr>
       <br/><br/>
-      <div class='container-fluid items'>
-          <table cellspacing="0" cellpadding="0" class="table table-condensed table-stripped">
-              <tr>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Offer</th>
-                <th>Action</th>
-              </tr>
-                <tr ng-repeat="Product in Products">
-                  <td>{{Product.Name}}</td>
-                  <td>{{Product.Category}}</td>
-                  <td>{{Product.Price}}</td>
-                  <td>
-                      <span ng-if="Product.Offer == true">Offers Available</span>
-                      <span ng-if="Product.Offer != true">No Offers</span>
-                  </td>
-                  <td><button value="{{Product.ProductId}}" ng-model="id" ng-click="Delete($event)">Delete</button></td>
-                </tr>
-              </table>
-      </div>
+      <div class="cards" ng-repeat="Product in Products">
+          <center>
+              <div>
+                  <h3> {{Product.Name}} </h3>
+                  <span> <b>Category:</b> {{Product.Category}} </span> <br/>
+                  <span ng-if="Product.Offer == true"><b> Offers: </b>Offers Available</span>
+                  <span ng-if="Product.Offer != true"><b> Offers: </b>No Offers</span>
+                  <h4> Price: </h4>
+                  <h4> INR: {{Product.Price}} </h4> <br/>
+                  <button class="btn btn-primary" value="{{Product.ProductId}}" ng-model="id" ng-click="Delete($event)" >Delete</button>
+              </div>
+          </center>
+        </div>
 </div>
 <div ng-show="showError">
   <h2> Sorry, Page can't be accessed </h2>
@@ -57,6 +38,15 @@
 
   
   <style>
+  .cards{
+  width: 25%;
+  float: left;
+  padding-bottom: 15px;
+  margin: 20px;
+  align-content: center;
+  border: 2px solid grey;
+  background-color: lightcyan;
+  }
   #imgcontainer{
     position:relative;
     border: 1px solid black;
