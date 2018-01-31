@@ -258,7 +258,7 @@ myApp.controller('categoriesController', ['$scope', '$http', 'AddToCartService',
 }]);
 
 //cartController
-myApp.controller('cartController', ['$scope', '$http', '$rootScope', 'DeleteFromCartService', '$location', function($scope, $http, $rootScope, DeleteFromCartService, $location) {
+myApp.controller('cartController', ['$scope', '$http', '$rootScope', 'DeleteFromCartService', '$location', 'tempQuantity', function($scope, $http, $rootScope, DeleteFromCartService, $location, tempQuantity) {
     // secure access only
     if(localStorage.getItem("ClientId") == null && localStorage.getItem("VendorId") == null) {
         $scope.showMain = false;
@@ -294,6 +294,8 @@ myApp.controller('cartController', ['$scope', '$http', '$rootScope', 'DeleteFrom
     }).then(function successCallBack(response) {
           $scope.responsecart = response.data;
           len = response.data.length;
+          if(len == 0)
+            $scope.disableOrder = true;
           $scope.initializeArray();
           $scope.initializeQtys_pid(len);
       }, function errorCallBack(errorResponse) {
@@ -314,6 +316,10 @@ myApp.controller('cartController', ['$scope', '$http', '$rootScope', 'DeleteFrom
   }
   $scope.initializeQtys_pid = function(len) {
     qtys_pid = new Array(len).fill(1);
+    for(var i=0; i<len; i++)
+    {
+        tempQuantity.setArray(i, 1);
+    }
   }
 
   $scope.posistiveQty = function(qty, index) {
@@ -351,6 +357,7 @@ myApp.controller('cartController', ['$scope', '$http', '$rootScope', 'DeleteFrom
     //$scope.qtys_pid = new Array($scope.responsecart.length).fill(1);
     //console.log(index);
     qtys_pid[index] = qty;
+    tempQuantity.setArray(index, qty);
     console.log(qtys_pid);
   };
 
@@ -369,7 +376,7 @@ myApp.controller('cartController', ['$scope', '$http', '$rootScope', 'DeleteFrom
     var paymentstatus;
 
     $scope.pid = new Array($scope.responsecart.length);
-    console.log(qtys_pid);
+    //console.log(qtys_pid);
 
     for(var i=0; i < $scope.pid.length; i++){
       $scope.pid[i] = $scope.responsecart[i].ProductId;
@@ -417,7 +424,7 @@ myApp.controller('cartController', ['$scope', '$http', '$rootScope', 'DeleteFrom
 }]);
 
 //orders controller
-myApp.controller('ordersController', function($scope, $http, $rootScope) {
+myApp.controller('ordersController', function($scope, $http, $rootScope, tempQuantity) {
   $scope.username;
   $scope.total;
   $scope.paymentstatus;
@@ -429,26 +436,35 @@ myApp.controller('ordersController', function($scope, $http, $rootScope) {
 
   getDetails();
 
+//   console.log(tempQuantity.getArray());
+//   console.log(tempQuantity.getArrayByIndex(0));
+  var len = Object.keys(tempQuantity.getArray()).length;
+
   $scope.conformorder = function () {
     $rootScope.$emit('CallToreduceQuantity', {});
-    var dborder = {
-      Username : $scope.username,
-      Payment : $scope.total,
-      Payment_Mode : $scope.paymentstatus
-    };
-    console.log(JSON.stringify(dborder));
-    $http({
-      method : 'POST',
-      data : JSON.stringify(dborder),
-      url : uri + 'Orders/PostOrder/',
-      headers : {'content-type' : 'application/json'}
-    }).then (function success(response){
-      console.log(response.data);
-      alert(response.data);
-    }), function error(errorResponse){
-      console.log(errorResponse.data);
-      alert(errorResponse.data);
-    };
+    for(var i=0; i<len; i++)
+    {
+        var dborder = {
+            Username : $scope.username,
+            Payment : $scope.total,
+            Payment_Mode : $scope.paymentstatus,
+            ProductId : tempQuantity.getArrayByIndex(i)
+          };
+          console.log(JSON.stringify(dborder));
+          $http({
+            method : 'POST',
+            data : JSON.stringify(dborder),
+            url : uri + 'Orders/PostOrder/',
+            headers : {'content-type' : 'application/json'}
+          }).then (function success(response){
+            console.log(response.data);
+            alert(response.data);
+          }), function error(errorResponse){
+            console.log(errorResponse.data);
+            alert(errorResponse.data);
+          };
+    }
+    
   };
 })
 
@@ -703,3 +719,19 @@ myApp.controller('registerController', ['$scope','$http', function($scope, $http
       $scope.register.Email = null;
   };
 }]);
+
+myApp.factory('tempQuantity', function () {
+    var factory = {};
+    var qtys_pid = {};
+
+    factory.setArray = function(key, value) {
+        qtys_pid[key] = value;
+    }
+    factory.getArrayByIndex = function(key) {
+       return qtys_pid[key];
+    };
+    factory.getArray = function() {
+        return qtys_pid;
+     };
+    return factory;
+});

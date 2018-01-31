@@ -12,14 +12,17 @@
                 <input type="number" step="0.01" name="price" id="price" ng-model="p.Price" tabindex="3" class="form-control" placeholder="Price" required>        
             </div>
             <div class="form-group">
-                <input type="checkbox" tabindex="5" class="" ng-model="p.Offer" name="offer" id="offer">
+                <input type="checkbox" tabindex="4" class="" ng-model="p.Offer" name="offer" id="offer">
                 <label for="offer"> Mark as an offer </label>
             </div>
             <div class="form-group">
-                <input type="number" name="quantity" id="price" ng-model="p.Quantity" tabindex="4" class="form-control" placeholder="Quantity" required>        
+                <input type="number" name="quantity" id="price" ng-model="p.Quantity" tabindex="5" class="form-control" placeholder="Quantity" required>        
             </div>
             <div class="form-group">
-                <input class="btn btn-primary" type="submit" tabindex="6" value="Add Product" />       
+                    <input type="text" name="image" id="image" ng-model="p.Image" tabindex="6" class="form-control" placeholder="Image Source" value="" required>        
+                </div>
+            <div class="form-group">
+                <input class="btn btn-primary" type="submit" tabindex="7" value="Add Product" />       
             </div>
         </form>
 </div>

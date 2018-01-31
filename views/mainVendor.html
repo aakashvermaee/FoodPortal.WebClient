@@ -22,12 +22,13 @@
           <center>
               <div>
                   <h3> {{Product.Name}} </h3>
+                  <img src={{Product.Image}} width="150" height="100"/> <br/><br/>
                   <span> <b>Category:</b> {{Product.Category}} </span> <br/>
                   <span ng-if="Product.Offer == true"><b> Offers: </b>Offers Available</span>
                   <span ng-if="Product.Offer != true"><b> Offers: </b>No Offers</span>
                   <h4> Price: </h4>
                   <h4> INR: {{Product.Price}} </h4> <br/>
-                  <button class="btn btn-primary" value="{{Product.ProductId}}" ng-model="id" ng-click="Delete($event)" >Delete</button>
+                  <button class="btn btn-danger" value="{{Product.ProductId}}" ng-model="id" ng-click="Delete($event)" >Delete</button>
               </div>
           </center>
         </div>
@@ -39,8 +40,8 @@
   
   <style>
   .cards{
-  width: 25%;
-  height: 250px;
+  width: 21%;
+  height: 350px;
   float: left;
   padding-bottom: 15px;
   margin: 20px;

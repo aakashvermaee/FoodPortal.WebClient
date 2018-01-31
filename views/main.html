@@ -41,6 +41,7 @@
         <center>
             <div>
                 <h3> {{Product.Name}} </h3>
+                <img src={{Product.Image}} width="150" height="100"/> <br/><br/>
                 <span ng-if="Product.Quantity == 0" style="color:red; font-size:1"> Product out of stock !! <br/> </span>
                 <span> <b>Category:</b> {{Product.Category}} </span> <br/>
                 <span ng-if="Product.Offer == true"><b> Offers: </b>Offers Available</span>
@@ -55,8 +56,8 @@
 
 <style>
 .cards{
-  width: 25%;
-  height: 250px;
+  width: 21%;
+  height: 350px;
   float: left;
   padding-bottom: 15px;
   margin: 20px;
